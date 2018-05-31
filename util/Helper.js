@@ -4,36 +4,17 @@ const FLASHCARD_STORAGE_KEY = "FLASHCARD_STORAGE_KEY";
 
 export const getDecks = () => {
   return Promise.resolve()
-          .then(() => {
-            return {
-              React: {
-                title: 'React',
-                questions: [
-                  {
-                    question: 'What is React?',
-                    answer: 'A library for managing user interfaces'
-                  },
-                  {
-                    question: 'Where do you make Ajax requests in React?',
-                    answer: 'The componentDidMount lifecycle event'
-                  }
-                ]
-              },
-              JavaScript: {
-                title: 'JavaScript',
-                questions: [
-                  {
-                    question: 'What is a closure?',
-                    answer: 'The combination of a function and the lexical environment within which that function was declared.'
-                  }
-                ]
-              }
-            }
-          });
-//  return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY);
+    .then(() => {
+      return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY);
+    })
+    .then((result) => {
+      const data = JSON.parse(result);
+      return data;
+    });
 };
 
 export const getDeck = (id) => {
+  debugger;
   return getDecks()
   .then((results) => {
     return results[id];
@@ -42,14 +23,23 @@ export const getDeck = (id) => {
 
 export const saveDeckTitle = (title) => {
   return AsyncStorage.mergeItem(FLASHCARD_STORAGE_KEY, JSON.stringify({
-    [title]: undefined
+    [title]: {
+      title: title,
+      questions: []
+    }
   }));
 };
 
 export const addCardToDeck = (title, card) => {
-  return AsyncStorage.mergeItem(FLASHCARD_STORAGE_KEY, JSON.stringify({
-    [title]: card,
-  }));
+  return getDeck(title)
+    .then((result) => {
+      const data = result;
+      data.questions.push(card);
+
+      return AsyncStorage.mergeItem(FLASHCARD_STORAGE_KEY, JSON.stringify({
+        [title]: data,
+      }));
+  });
 };
 
 // To manage your AsyncStorage database, you'll want to create four different helper methods.
