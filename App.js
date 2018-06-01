@@ -6,8 +6,13 @@ import NewDeck from './NewDeck';
 import NewCard from './NewCard';
 import Quiz from './Quiz';
 import { createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation';
+import { setLocalNotification } from './util/Helper';
 
 export default class App extends React.Component {
+
+  componentDidMount() {
+    setLocalNotification();
+  }
 
   render() {
     return (

@@ -1,6 +1,8 @@
 import { AsyncStorage } from 'react-native';
+import { Notifications, Permissions } from 'expo';
 
 const FLASHCARD_STORAGE_KEY = "FLASHCARD_STORAGE_KEY";
+const FLASHCARD_NOTIFICATION_KEY = "FLASHCARD_NOTIFICATION_KEY";
 
 export const getDecks = () => {
   return Promise.resolve()
@@ -14,7 +16,6 @@ export const getDecks = () => {
 };
 
 export const getDeck = (id) => {
-  debugger;
   return getDecks()
   .then((results) => {
     return results[id];
@@ -42,9 +43,52 @@ export const addCardToDeck = (title, card) => {
   });
 };
 
-// To manage your AsyncStorage database, you'll want to create four different helper methods.
-//
-// getDecks: return all of the decks along with their titles, questions, and answers.
-// getDeck: take in a single id argument and return the deck associated with that id.
-// saveDeckTitle: take in a single title argument and add it to the decks.
-// addCardToDeck: take in two arguments, title and card, and will add the card to the list of questions for the deck with the associated title.
+export const clearLocalNotifications = () => {
+  return AsyncStorage.removeItem(FLASHCARD_NOTIFICATION_KEY)
+    .then(() => {
+      Notifications.cancelAllScheduledNotificationsAsync();
+    });
+};
+
+export const createNotification = () => {
+  return {
+    title: 'Quiz time!',
+    body: 'You haven\'t played yet, please play.',
+    android: {
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true,
+    }
+  };
+};
+
+export const setLocalNotification = () => {
+  AsyncStorage.getItem(FLASHCARD_NOTIFICATION_KEY)
+    .then(JSON.parse)
+    .then((data) => {
+      if(true) {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+          .then(({status}) => {
+            if(status === 'granted') {
+              Notifications.cancelAllScheduledNotificationsAsync();
+
+              let tomorrow = new Date();
+              tomorrow.setDate(tomorrow.getDate() + 1);
+              tomorrow.setHours(20);
+              tomorrow.setMinutes(0);
+
+              Notifications.scheduleLocalNotificationAsync(
+                createNotification(),
+                {
+                  time: tomorrow,
+                  repeat: 'day'
+                }
+              )
+
+              AsyncStorage.setItem(FLASHCARD_NOTIFICATION_KEY, JSON.stringify(true));
+            }
+          });
+      }
+    });
+};

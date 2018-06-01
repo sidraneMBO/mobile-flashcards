@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import { addCardToDeck } from './util/Helper';
+import { addCardToDeck, setLocalNotification, clearLocalNotifications } from './util/Helper';
 import Card from './Card';
 
 export default class Quiz extends React.Component {
@@ -27,6 +27,13 @@ export default class Quiz extends React.Component {
       };
     });
   };
+
+  componentDidMount() {
+    clearLocalNotifications()
+      .then(() => {
+        setLocalNotification();
+      });
+  }
 
   render() {
     const questions = this.props.navigation.state.params.deck.questions;
