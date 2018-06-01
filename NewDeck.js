@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import { saveDeckTitle } from './util/Helper';
+import { saveDeckTitle, getDeck } from './util/Helper';
 
 export default class NewDeck extends React.Component {
   state = {
@@ -15,14 +15,18 @@ export default class NewDeck extends React.Component {
 
   submit = () => {
     const title = this.state.title;
+
     saveDeckTitle(title)
     .then(() => {
+      return getDeck(title);
+    })
+    .then((deck) => {
       // Clear old value
       this.setState({
         title: ""
       });
 
-      this.props.navigation.navigate('DeckList', { reload: true });
+      this.props.navigation.navigate('Deck', { deck });
     });
   };
 
