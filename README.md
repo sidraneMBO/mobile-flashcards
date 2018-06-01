@@ -7,5 +7,5 @@
     - Install all project dependencies with `yarn install`
     - Run `yarn start`
     - Open Genymotion if using a simulator and start an android virtual device
-    - Hit 'a' on console running yarn start to load app
+    - Hit 'a' on terminal
     - Test using android simulator
