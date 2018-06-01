@@ -67,7 +67,7 @@ export const setLocalNotification = () => {
   AsyncStorage.getItem(FLASHCARD_NOTIFICATION_KEY)
     .then(JSON.parse)
     .then((data) => {
-      if(true) {
+      if(data === null) {
         Permissions.askAsync(Permissions.NOTIFICATIONS)
           .then(({status}) => {
             if(status === 'granted') {
