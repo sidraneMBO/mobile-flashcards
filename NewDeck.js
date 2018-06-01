@@ -36,7 +36,7 @@ export default class NewDeck extends React.Component {
         onChangeText={this.handleTitleChange}
         />
         <TouchableOpacity onPress={() => this.submit() }>
-          <Text>Submit</Text>
+          <Text>Create Deck</Text>
         </TouchableOpacity>
       </View>
     );

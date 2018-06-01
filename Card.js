@@ -26,13 +26,13 @@ export default class Card extends React.Component {
           ? <View style={styles.container}>
               <Text style={styles.question}>{this.props.question}</Text>
               <TouchableOpacity onPress={() => this.setShowQuestion(false)}>
-                <Text style={styles.flipButton}>Answer</Text>
+                <Text style={styles.flipButton}>Show Answer</Text>
               </TouchableOpacity>
             </View>
           : <View style={styles.container}>
               <Text style={styles.answer}>{this.props.answer}</Text>
               <TouchableOpacity onPress={() => this.setShowQuestion(true)}>
-                <Text style={styles.flipButton}>Question</Text>
+                <Text style={styles.flipButton}>Show Question</Text>
               </TouchableOpacity>
             </View>
         }

@@ -28,6 +28,13 @@ export default class Quiz extends React.Component {
     });
   };
 
+  restartQuiz = () => {
+    this.setState({
+      score: 0,
+      currentQuestion: 0
+    });
+  };
+
   componentDidMount() {
     clearLocalNotifications()
       .then(() => {
@@ -39,12 +46,23 @@ export default class Quiz extends React.Component {
     const questions = this.props.navigation.state.params.deck.questions;
     const questionsLength = questions == null ? 0 : questions.length;
     const showQuizCompleted = (this.state.currentQuestion + 1) > questionsLength;
+    const deck = this.props.navigation.state.params.deck;
 
     return (
       <View style={styles.container}>
       {
         showQuizCompleted
-        ? <Text style={styles.score}>Wohoo, you scored {this.state.score}/{questionsLength}!</Text>
+        ? <View style={styles.container}>
+          <Text style={styles.score}>Wohoo, you scored {this.state.score}/{questionsLength}!</Text>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity style={styles.button} onPress={() => this.restartQuiz()}>
+              <Text style={styles.positiveButtonText}>Restart Quiz</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Deck', { deck })}>
+              <Text style={styles.negativeButtonText}>Back to Deck</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
         : <View style={styles.container}>
             <Text style={styles.quizCount}>{this.state.currentQuestion + 1}/{questionsLength}</Text>
             <View style={styles.quizContainer}>

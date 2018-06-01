@@ -16,10 +16,10 @@ export default class Deck extends React.Component {
         </View>
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('NewCard', { deck: this.props.navigation.state.params.deck })}>
-            <Text style={styles.buttonText}>Add Card</Text>
+            <Text style={styles.buttonText}>Create New Question</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Quiz', { deck: this.props.navigation.state.params.deck })}>
-            <Text style={styles.buttonText}>Start Quiz</Text>
+            <Text style={styles.buttonText}>Start a Quiz</Text>
           </TouchableOpacity>
         </View>
       </View>
